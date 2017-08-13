@@ -1,0 +1,10 @@
+**/*.DS_Store
+**/*.pyc
+doc
+tf_models
+checkpoints
+
+virtualenv
+.idea
+.git
+.gitignore

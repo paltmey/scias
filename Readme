@@ -1,0 +1,69 @@
+Requirements für das System:
+
+- RehinkDB
+- OpenCV mit Python-Bindings
+- Tensorflow
+- gunicorn
+- npm oder yarn mit Node.js
+- die Python Pakete innerhalb der requirements.txt Dateien im ApplicationServer- und InferenceServer-Ordner
+- ein spacy Model
+
+____________________________________________________________
+Zum installieren des spaCy Models kann der Befehl
+
+python -m spacy download en_core_web_md
+
+verwendet werden, wenn spacy (und die anderen Pakete aus den requirements.txt) bereits installiert ist.
+Ohne dieses Modell verwendet spacy keine Wort-Vektoren.
+____________________________________________________________
+Das System besteht aus den drei Projekten
+- frontend: Weboberfläche
+- ApplicationServer: Server für den Videoupload und -analyse und Suchanfragen
+- InferenceServer: Server für die Bilderkennung
+____________________________________________________________
+frontend:
+
+Die Weboberfläche kann mit dem Befehl npm start (oder yarn start) innerhalb des frontend-Ordners aufgerufen werden.
+Der start-Befehl startet einen Development-Server, der außerdem als Proxy die REST-Anfragen an den ApplicationServer weiterleitet.
+Für ein Produktionssytem kann mit dem Befehl npm build (oder yarn build) ein statischer Build erzeugt werden, der auf einen externen Webserver kopiert werden kann.
+____________________________________________________________
+ApplicationServer:
+
+Der ApplicationServer ist der Server für den Videoupload und -analyse und Suchanfragen.
+Die app.py Datei ist der Einstiegspunkt der Anwendung und kann mit einem WSGI-Server wie Gunicorn gestartet werden.
+Über die config.json Dateien können die Konfigurationen angepasst werden.
+Zum starten des Systems müssen die Pfade key_frame_directory und video_directory angepasst werden.
+Im utils-Ordner befinden sich die beiden Skripte create_db.py und build_spacy_annoy_index.py
+Das create_db.py Skript erzeugt die Datenbank und Tabellen in der RethinkDB.
+Mit dem Skript build_spacy_annoy_index.py wird ein Annoy-Index mit den Imagenet-Konzepten erzeugt.
+____________________________________________________________
+InferenceServer:
+
+Der InferenceServer Server für die Bilderkennung.
+Auch hier ist die app.py Datei der Einstiegspunkt für den Server und muss mit einem WSGI-Server gestartet werden.
+____________________________________________________________
+Systemstart:
+
+Zum Starten des Systems kann das frontend mit npm start aufgerufen werden.
+Die Webseite ist dann unter localhost:3000 im Browser aufrufbar.
+
+Die beiden Server können mit den Befehlen:
+
+cd ApplicationServer
+gunicorn app
+cd ../InferenceServer
+gunicorn app --bind localhost:8001 
+
+gestartet werden.
+Dabei ist zu beachten, dass der InferenceServer mit der bind-Option auf einen anderen Port zugewiesen ist.
+Der ApplicationServer läuft standardmäßig unter localhost:8000.
+____________________________________________________________
+Videoupload:
+
+Ein Video kann mit einem POST-Request unter http://localhost:8000/videos hochgeladen werden.
+Ein Beispiel-Request mit curl wäre:
+
+curl --request POST --header "Content-Type:video/mp4" --data-binary "@Video.mp4" http://localhost:8000/videos
+
+Dabei ist der Mimetype des Videos als Content-Type anzugeben.
+Die Videodatei wird mit einem @ von curl als Datei erkannt.

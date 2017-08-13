@@ -1,0 +1,12 @@
+**/*.DS_Store
+**/*.pyc
+doc
+
+*/build
+**/*.so
+**/*.c
+
+virtualenv
+.idea
+.git
+.gitignore

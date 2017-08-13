@@ -1,0 +1,3 @@
+from search_controller import SearchController
+from static_controller import StaticController
+from video_controller import VideoController

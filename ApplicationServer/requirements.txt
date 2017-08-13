@@ -1,0 +1,11 @@
+Cython
+spacy
+Pillow
+requests
+numpy
+annoy
+pyfunctional
+falcon
+rethinkdb
+gunicorn
+futures

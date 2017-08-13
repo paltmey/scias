@@ -1,0 +1,29 @@
+version: '2'
+services:
+  application_server:
+    build: ./ApplicationServer
+    ports:
+      - "8000:8000"
+    volumes:
+      - data-volume:/data
+    depends_on:
+      - "db"
+  inference_server:
+    build: ./InferenceServer
+  db:
+    image: rethinkdb
+    ports:
+      - "8888:8080"
+    volumes:
+      - /data
+  web:
+    build: ./WebServer
+    ports:
+      - "8080:80"
+    volumes:
+      - data-volume:/data
+    depends_on:
+      - "application_server"
+volumes:
+  data-volume:
+  

@@ -1,0 +1,6 @@
+version: '2'
+services:
+  application_server:
+    entrypoint: ["/bin/bash", "docker-entrypoint-dev.sh"]
+  # inference_server:
+  #   entrypoint: []

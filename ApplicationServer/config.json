@@ -1,0 +1,13 @@
+{
+  "db_host":"db",
+  "db_port":28015,
+  "key_frame_directory":"/data/images",
+  "upload_directory":"/data/uploads",
+  "video_directory":"/data/videos",
+  "inference_server_address":"http://inference_server:8000/classify_image",
+  "batch_size":20,
+  "annoy_index_path":"utils/spacy.ann",
+  "vector_length":300,
+  "annoy_id_to_imagenet_node_path":"utils/annoy_id_to_imagenet_node.json",
+  "imagenet_labels_path":"utils/imagenet_labels.json"
+}
